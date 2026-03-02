@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.smu.mscda</groupId>
+    <artifactId>MavenAssingment</artifactId>
+    <version>1.0.1</version>
+
+    <properties>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.jupiter.version>6.0.3</junit.jupiter.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- JUnit for Unit Test -->
+        <!-- Source: https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Maven Jar Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.smu.mscda.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Spotless Plugin for Code Formatting -->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>3.2.1</version>  <!-- Check https://mvnrepository.com/artifact/com.diffplug.spotless/spotless-maven-plugin for latest -->
+                <configuration>
+                    <java>
+                        <googleJavaFormat />  <!-- Uses Google's style automatically -->
+                        <removeUnusedImports />  <!-- Bonus lint-like: removes unused imports -->
+                        <importOrder>
+                            <order>java.,javax.,org.,com.,,static java.,static javax.,static org.,static com.</order>  <!-- Customize if needed -->
+                        </importOrder>
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                            <include>src/test/java/**/*.java</include>
+                        </includes>
+                    </java>
+                    <!-- Optional: enforce license header -->
+                    <formats>
+                        <format>
+                            <includes>
+                                <include>pom.xml</include>
+                            </includes>
+                            <trimTrailingWhitespace />
+                            <endWithNewline />
+                        </format>
+                    </formats>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>spotless-check</id>
+                        <goals>
+                            <goal>check</goal>  <!-- Fails build if not formatted -->
+                        </goals>
+                        <phase>verify</phase>  <!-- Or integrate into validate/compile -->
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Checkstyle Plugin for Code Style Enforcement -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>  <!-- Latest as of early 2026 -->
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>  <!-- Built-in Google style -->
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>  <!-- Fail build on violations -->
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <linkXRef>false</linkXRef>  <!-- Optional: no cross-ref needed -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- PMD Plugin for Code Quality Analysis -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.28.0</version>  <!-- Check latest on mvnrepository.com -->
+                <configuration>
+                    <rulesets>
+                        <ruleset>/rulesets/java/quickstart.xml</ruleset>  <!-- Built-in basic set -->
+                        <!-- Or use stricter: /rulesets/java/braces.xml,/rulesets/java/unnecessary.xml -->
+                    </rulesets>
+                    <minimumPriority>3</minimumPriority>  <!-- 1=high, 5=low severity -->
+                    <printFailingErrors>true</printFailingErrors>
+                    <failOnViolation>true</failOnViolation>
+                    <includeTests>true</includeTests>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pmd-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
