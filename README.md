@@ -44,7 +44,75 @@ java -jar target/MavenAssingment-1.0.1.jar
 
 This project includes several plugins to enforce code quality and consistency.
 
-### 1. Spotless - Code Formatting
+### 1. Maven JAR Plugin - JAR Packaging
+
+**Purpose**: Packages compiled Java code into a JAR (Java ARchive) file for distribution and execution.
+
+#### Commands
+
+**Create JAR package (included in package phase):**
+```bash
+mvn jar:jar
+```
+
+**Build complete package with JAR:**
+```bash
+mvn clean package
+```
+
+**Configuration**:
+- **archive/manifest/mainClass**: `com.smu.mscda.Main` - Specifies entry point
+- **finalName**: `MavenAssingment-${project.version}` - JAR filename
+
+**Output**:
+- `target/MavenAssingment-1.0.1.jar` - Executable JAR file
+
+---
+
+### 2. Maven Shade Plugin - Uber JAR Creation
+
+**Purpose**: Creates a fat JAR (uber JAR) that includes all project dependencies in a single executable file.
+
+#### Commands
+
+**Create shaded JAR with dependencies:**
+```bash
+mvn clean package shade:shade
+```
+
+**Build only shade JAR:**
+```bash
+mvn shade:shade
+```
+
+**Full command:**
+```bash
+mvn org.apache.maven.plugins:maven-shade-plugin:shade
+```
+
+**Features**:
+- Packages all dependencies into a single JAR
+- No need for external classpath configuration
+- Relocates classes to avoid conflicts
+- Creates self-contained executable
+- Useful for command-line applications and microservices
+
+**Configuration**:
+- **transformers/mainClass**: Sets entry point for executable JAR
+- **finalName**: Names the output JAR file
+- **shadedArtifactAttached**: Creates both original and shaded JARs
+
+**Output**:
+- `target/MavenAssingment-1.0.1.jar` - Shaded JAR with all dependencies included
+
+**Execution**:
+```bash
+java -jar target/MavenAssingment-1.0.1.jar
+```
+
+---
+
+### 3. Spotless - Code Formatting
 
 **Purpose**: Automatically formats code according to Google Java Format standard.
 
@@ -69,7 +137,7 @@ mvn com.diffplug.spotless:spotless-maven-plugin:apply
 
 ---
 
-### 2. Checkstyle - Code Style Enforcement
+### 4. Checkstyle - Code Style Enforcement
 
 **Purpose**: Validates code against Google's coding standards to ensure consistency.
 
@@ -99,7 +167,7 @@ mvn org.apache.maven.plugins:maven-checkstyle-plugin:check
 
 ---
 
-### 3. PMD - Code Quality Analysis
+### 5. PMD - Code Quality Analysis
 
 **Purpose**: Detects potential bugs, dead code, and other issues.
 
@@ -157,6 +225,8 @@ mvn clean compile -DskipTests -Dcheckstyle.skip=true -Dpmd.skip=true
 
 | Plugin | Check Command | Fix/Report Command |
 |--------|---------------|--------------------|
+| **Maven JAR** | `mvn clean package` | `mvn jar:jar` |
+| **Maven Shade** | `mvn clean package shade:shade` | `mvn shade:shade` |
 | **Spotless** | `mvn spotless:check` | `mvn spotless:apply` |
 | **Checkstyle** | `mvn checkstyle:check` | `mvn checkstyle:checkstyle` |
 | **PMD** | `mvn pmd:check` | `mvn pmd:pmd` |

@@ -25,11 +25,31 @@
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- lombok for reducing boilerplate code -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.42</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- capitalize -->
+        <!-- Source: https://mvnrepository.com/artifact/org.webjars.npm/lodash.capitalize -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>lodash.capitalize</artifactId>
+            <version>4.2.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- md5 hash -->
+        <!-- Source: https://mvnrepository.com/artifact/org.webjars.npm/spark-md5 -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>spark-md5</artifactId>
+            <version>3.0.2</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
