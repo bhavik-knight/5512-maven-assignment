@@ -1,10 +1,18 @@
 package com.smu.mscda;
 
+import lombok.Getter;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Getter
 public class EncryptString {
-  private String algorithm = null;
+    /**
+     * -- GETTER --
+     *  public method to get the hashing algorithm being used
+     *
+     */
+    private String algorithm = null;
 
   /** default constructor to set the default hashing algorithm to MD5 */
   public EncryptString() {
@@ -20,16 +28,7 @@ public class EncryptString {
     this.setAlgorithm(algorithm);
   }
 
-  /**
-   * public method to get the hashing algorithm being used
-   *
-   * @return the hashing algorithm being used
-   */
-  public String getAlgorithm() {
-    return this.algorithm;
-  }
-
-  /**
+    /**
    * public method to set the hashing algorithm to be used for hashing the string
    *
    * @param algorithm the hashing algorithm to be used for hashing the string

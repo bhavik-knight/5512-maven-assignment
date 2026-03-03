@@ -21,7 +21,7 @@ public class CapitalizeString {
    * private method to capitalize the first letter of the given string
    *
    * @param word the string to be capitalized
-   * @return: capitalized version of the given string
+   * @return capitalized version of the given string
    */
   private String capitalize(String word) {
     // capitalize the first letter of the string and return the result
