@@ -50,11 +50,6 @@ This project includes several plugins to enforce code quality and consistency.
 
 #### Commands
 
-**Create JAR package (included in package phase):**
-```bash
-mvn jar:jar
-```
-
 **Build complete package with JAR:**
 ```bash
 mvn clean package
