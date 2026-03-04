@@ -146,6 +146,23 @@ mvn clean verify -Dpmd.skip=true
 | PMD | `mvn pmd:check` | `mvn pmd:pmd` |
 | Tests | `mvn test` | N/A |
 
+## Jenkins CI/CD
+
+The project includes a `Jenkinsfile` for automated CI/CD using Jenkins.
+
+### Pipeline Stages
+1. **Checkout**: Pulls the latest code from the repository.
+2. **Verify Environment**: Checks Java and Maven versions on the build agent.
+3. **Build**: Compiles the project using `mvn clean compile`.
+4. **Test**: Executes unit tests and publishes reports (21 total tests).
+5. **Package**: Generates the final executable JAR file.
+
+### Setup Instructions
+- Ensure Jenkins has the **Maven Integration** and **Pipeline** plugins.
+- Configure "Maven3" and "JDK21" in Global Tool Configuration.
+- Create a new Pipeline job and point it to this repository's `main` branch.
+- Jenkins will automatically detect the `Jenkinsfile` and execute the pipeline.
+
 ## Quality Gates
 
 ### Full Verification

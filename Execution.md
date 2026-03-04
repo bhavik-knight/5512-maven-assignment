@@ -6,9 +6,9 @@ This document provides a step-by-step guide of the Maven build process execution
 
 ## 1. Project Configuration - pom.xml
 
-![Maven POM Configuration](./5512_maven_pom.png)
+![Figure 1: Maven POM Configuration (pom.xml)](./5512_maven_pom.png){width=100%}
 
-**Description**: This screenshot shows the `pom.xml` file configuration in the IDE. The POM (Project Object Model) defines:
+This screenshot shows the `pom.xml` file configuration in the IDE. The POM (Project Object Model) defines:
 - Project metadata (groupId, artifactId, version)
 - Dependencies (JUnit 5, Lombok)
 - Build plugins (Spotless, Checkstyle, PMD)
@@ -25,9 +25,9 @@ This document provides a step-by-step guide of the Maven build process execution
 
 ## 2. Main Java Application
 
-![Main.java Source Code](./5512_maven_main.png)
+![Figure 2: Main.java Source Code Implementation](./5512_maven_main.png){width=100%}
 
-**Description**: This screenshot displays the `Main.java` source file, which is the entry point of the application. It demonstrates:
+This screenshot displays the `Main.java` source file, which is the entry point of the application. It demonstrates:
 - User input handling with Scanner
 - Exception handling and error messages
 - String capitalization using `CapitalizeString` class
@@ -66,9 +66,9 @@ This document provides a step-by-step guide of the Maven build process execution
 
 ## 4. Compilation Phase - mvn clean compile
 
-![Maven Clean Compile](./5512_maven_compile.png)
+![Figure 3: Maven Clean Compile Execution Output](./5512_maven_compile.png){width=100%}
 
-**Description**: This screenshot shows the output of running `mvn clean compile` command. This phase:
+This screenshot shows the output of running `mvn clean compile` command. This phase:
 - Cleans the target directory (removes previous build artifacts)
 - Downloads dependencies from Maven repositories
 - Compiles all Java source files in `src/main/java`
@@ -86,9 +86,9 @@ This document provides a step-by-step guide of the Maven build process execution
 
 ## 4. Testing Phase - mvn clean test
 
-![Maven Clean Test](./5512_maven_clean_test.png)
+![Figure 4: Maven Clean Test Results (21 Tests Passed)](./5512_maven_clean_test.png){width=100%}
 
-**Description**: This screenshot shows the execution of `mvn clean test` command. This phase:
+This screenshot shows the execution of `mvn clean test` command. This phase:
 - Cleans the target directory
 - Compiles source code
 - Compiles test code from `src/test/java`
@@ -132,9 +132,9 @@ The project now includes a comprehensive test suite with **21 total tests** acro
 
 ## 5. Package Build - mvn clean package
 
-![Maven Clean Package](./5512_maven_clean_package.png)
+![Figure 5: Maven Clean Package (Build Success with Quality Checks)](./5512_maven_clean_package.png){width=100%}
 
-**Description**: This screenshot shows the output of `mvn clean package` command. This is the complete build phase that:
+This screenshot shows the output of `mvn clean package` command. This is the complete build phase that:
 - Cleans previous builds
 - Compiles source and test code
 - Runs all unit tests
@@ -158,9 +158,9 @@ The project now includes a comprehensive test suite with **21 total tests** acro
 
 ## 6. JAR Package Generation
 
-![Maven JAR Package](./5512_jar_package.png)
+![Figure 6: Generated Executable JAR Artifact](./5512_jar_package.png){width=90%}
 
-**Description**: This screenshot shows the final JAR package that was generated after the build process. The JAR package is:
+This screenshot shows the final JAR package that was generated after the build process. The JAR package is:
 - The compiled application packaged into a single executable file
 - Named `MavenAssingment-1.0.1.jar` with version 1.0.1
 - Located in the `target/` directory
@@ -188,9 +188,9 @@ java -jar target/MavenAssingment-1.0.1.jar
 
 ## 7. Test Execution - mvn test
 
-![Maven Test](5512_maven_test_MainTest.png)
+![Figure 7: Full JUnit 5 Test Suite Execution Output](./5512_maven_test_MainTest.png){width=100%}
 
-**Description**: This screenshot shows the output of `mvn test` command. This phase runs the complete unit test suite without packaging:
+This screenshot shows the output of `mvn test` command. This phase runs the complete unit test suite without packaging:
 - Compiles source code
 - Compiles test code
 - Executes all JUnit 5 tests from both test classes
@@ -230,7 +230,8 @@ Uses custom-written classes: `CapitalizeString` and `EncryptString`
 **2. ExternalLibrariesTest.java (9 Tests - Apache Commons Libraries)**
 
 Uses external libraries: Apache Commons Lang3 and Apache Commons Codec
-![ExternalLibrariesTest.java](./5512_maven_test_ExternalLibrariesTest.png)
+
+![Figure 8: External Libraries Comparison Tests](./5512_maven_test_ExternalLibrariesTest.png){width=100%}
 
 **Capitalization Tests** (3 tests):
 - `capitalizeSmuUsingExternalLib()` - StringUtils.capitalize("smu") → "Smu"
@@ -249,11 +250,11 @@ Uses external libraries: Apache Commons Lang3 and Apache Commons Codec
 
 ### Verification Benefits
 
-✅ **Code Correctness**: Manual implementations match library behavior
-✅ **Library Integration**: Demonstrates proper use of Apache Commons libraries
-✅ **Regression Testing**: Both implementations produce identical results
-✅ **Documentation**: Test cases serve as usage examples
-✅ **Confidence**: Double verification of algorithm implementations
+✅ **Code Correctness**: Manual implementations match library behavior  
+✅ **Library Integration**: Demonstrates proper use of Apache Commons libraries  
+✅ **Regression Testing**: Both implementations produce identical results  
+✅ **Documentation**: Test cases serve as usage examples  
+✅ **Confidence**: Double verification of algorithm implementations  
 
 ---
 
@@ -336,7 +337,8 @@ mvn pmd:check
 # After packaging, run the JAR
 java -jar target/MavenAssingment-1.0.1.jar
 ```
-![Running the package](./5512_jar_package.png)
+
+![Figure 9: Application Startup and Execution Sample](./5512_jar_package.png){width=90%}
 
 ---
 
@@ -396,13 +398,54 @@ java -jar target/MavenAssingment-1.0.1.jar
 
 ---
 
+## 8. Jenkins CI/CD Pipeline Execution
+
+The project is integrated with a Jenkins-based CI/CD pipeline defined in the `Jenkinsfile`. This pipeline automates the entire lifecycle from code checkout to package generation.
+
+### 8.1 Pipeline Stage: Test Execution
+
+![Figure 10: Jenkins Pipeline Test Stage Progress](./5512_jenkins_cicd_stage_test.png){width=100%}
+
+The Jenkins pipeline triggers the `mvn test` phase. This screenshot shows the pipeline in progress, specifically focusing on the test stage execution within the Jenkins UI.
+
+### 8.2 Test Results Validation
+
+![Figure 11: Jenkins Unit Test Result Summary](./5512_jenkins_cicd_test_passed.png){width=100%}
+
+After the test stage completes, Jenkins captures the JUnit results. This screenshot confirms that all 21 tests passed successfully within the CI environment, ensuring code stability before packaging.
+
+### 8.3 Packaging Phase
+
+![Figure 12: Jenkins Automated Package Stage](./5512_jenkins_cicd_package.png){width=100%}
+
+Once tests pass, the pipeline proceeds to the `Package` stage, running `mvn clean package`. This ensures that a clean, tested JAR artifact is generated automatically.
+
+### 8.4 Build Success and Artifact Confirmation
+
+![Figure 13: Jenkins Build Status Success](./5512_jenkins_cicd_success.png){width=100%}
+
+The final status of the pipeline shown as "Success". This indicates that every stage—Checkout, Verify Environment, Build, Test, and Package—was completed without errors.
+
+### 8.5 Full Pipeline Visualization
+
+![Figure 14: Comprehensive Jenkins Pipeline Stage View](./5512_jenkins_cicd_final_pipeline.png){width=100%}
+
+A comprehensive view of the Jenkins Stage View, showing the duration and status of each individual stage in the pipeline. This provides a clear audit trail of the automation process.
+
+### 8.6 Execution Log Output
+
+![Figure 15: Detailed Jenkins Console Output for Package Stage](./5512_jenkins_cicd_run_package.png){width=100%}
+
+Detailed console output from the Jenkins build agent, showing the final Maven packaging logs and the "BUILD SUCCESS" message within the CI environment.
+
+---
+
 ## Conclusion
 
-The Maven build process demonstrates a well-configured project with:
-- ✅ Clean build automation
-- ✅ Comprehensive unit testing
-- ✅ Code quality enforcement
-- ✅ Proper dependency management
-- ✅ Professional build artifacts
+The Maven build process, combined with automated Jenkins CI/CD pipelines, demonstrates a professional development workflow with:
+- ✅ Automated build and test cycles  
+- ✅ Continuous integration for multi-developer environments  
+- ✅ Quality gate enforcement through Maven plugins  
+- ✅ Reliable artifact generation and verification  
 
-The project is ready for development, testing, and deployment.
+The project is fully optimized for automated delivery and maintenance.
