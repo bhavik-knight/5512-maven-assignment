@@ -19,8 +19,8 @@ public final class Main {
     System.out.println("================================");
     System.out.println("Hello and welcome!");
     System.out.println(
-        "This program will take a string input from the user, capitalize the first letter of the string.\n" +
-        "Then hash the capitalized string using MD5 and SHA-256 algorithms.");
+        "This program will take a string input from the user, capitalize the first letter of the string.\n"
+            + "Then hash the capitalized string using MD5 and SHA-256 algorithms.");
 
     // get user input from the terminal and store it in a variable
     String word = null;
