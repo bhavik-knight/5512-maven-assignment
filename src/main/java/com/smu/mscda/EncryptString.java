@@ -5,10 +5,9 @@ import java.security.NoSuchAlgorithmException;
 
 import lombok.Getter;
 
-@Getter
 public class EncryptString {
   /** -- GETTER -- public method to get the hashing algorithm being used */
-  private String algorithm = null;
+  @Getter private String algorithm = null;
 
   /** default constructor to set the default hashing algorithm to MD5 */
   public EncryptString() {

@@ -15,7 +15,7 @@ This document provides a step-by-step guide of the Maven build process execution
 - Plugin configurations and execution phases
 
 **Key Configuration Elements**:
-- Compiler plugin for Java 25
+- Compiler plugin for Java 21
 - Maven Surefire plugin for testing
 - Spotless plugin for code formatting
 - Checkstyle plugin for style validation
@@ -28,11 +28,13 @@ This document provides a step-by-step guide of the Maven build process execution
 ![Main.java Source Code](./5512_maven_main.png)
 
 **Description**: This screenshot displays the `Main.java` source file, which is the entry point of the application. It demonstrates:
+- User input handling with Scanner
+- Exception handling and error messages
 - String capitalization using `CapitalizeString` class
 - MD5 hash generation using `EncryptString` class
 - SHA-256 hash generation using `EncryptString` class
-- User input handling with Scanner
-- Exception handling and error messages
+- String Capitalization using `StringUtils.capitalize()` from Apache Commons **Lang3** library
+- MD5 and SHA-256 hashing using `DigestUtils` from Apache Commons **Codec** library
 
 **Execution Flow**:
 1. Prompts user to enter a string
@@ -43,7 +45,26 @@ This document provides a step-by-step guide of the Maven build process execution
 
 ---
 
-## 3. Compilation Phase - mvn clean compile
+**Dependencies Used**:
+```xml
+<!-- Apache Commons Lang3 for string utilities -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.20.0</version>
+</dependency>
+
+<!-- Apache Commons Codec for hashing utilities -->
+<dependency>
+    <groupId>commons-codec</groupId>
+    <artifactId>commons-codec</artifactId>
+    <version>1.21.0</version>
+</dependency>
+```
+
+---
+
+## 4. Compilation Phase - mvn clean compile
 
 ![Maven Clean Compile](./5512_maven_compile.png)
 
@@ -75,19 +96,37 @@ This document provides a step-by-step guide of the Maven build process execution
 - Generates test reports
 
 **Test Execution Details**:
-- Runs 15 unit tests from `MainTest.java`
-- Tests cover:
-  - String capitalization scenarios
-  - MD5 hash generation and validation
-  - SHA-256 hash generation and validation
-  - Error handling for null/empty inputs
-  - Edge cases (single character, already capitalized strings)
+The project now includes a comprehensive test suite with **21 total tests** across two test classes:
+
+1. **MainTest.java** (12 tests - Manual implementations)
+   - Tests using manually written `CapitalizeString` class
+   - Tests using manually written `EncryptString` class
+   - Coverage includes string capitalization, MD5 hashing, SHA-256 hashing, error handling
+   
+2. **ExternalLibrariesTest.java** (9 tests - External libraries)
+   - Tests using Apache Commons Lang3 `StringUtils.capitalize()`
+   - Tests using Apache Commons Codec `DigestUtils.md5Hex()`
+   - Tests using Apache Commons Codec `DigestUtils.sha256Hex()`
+   - Identical test scenarios to MainTest for direct comparison
+
+**Test Breakdown**:
+- Capitalization tests (manual + external): Compare custom implementation with library
+- MD5 hash generation tests: Validate hash algorithms match expected output
+- SHA-256 hash generation tests: Validate hash algorithms match expected output
+- Error handling tests: Verify exception handling for null/empty inputs
+- Edge cases (single character, already capitalized strings)
 
 **Success Criteria**:
 - BUILD SUCCESS message
-- All 15 tests pass
+- All 21 tests pass
 - No test failures or errors
 - Test duration shown in console
+
+**Benefits of Dual Testing**:
+- ✅ Validates custom implementations are correct
+- ✅ Ensures external libraries produce identical results
+- ✅ Demonstrates library integration patterns
+- ✅ Provides code examples for future reference
 
 ---
 
@@ -149,43 +188,72 @@ java -jar target/MavenAssingment-1.0.1.jar
 
 ## 7. Test Execution - mvn test
 
-![Maven Test](./5512_maven_test.png)
+![Maven Test](5512_maven_test_MainTest.png)
 
-**Description**: This screenshot shows the output of `mvn test` command. This phase runs the unit test suite without packaging:
+**Description**: This screenshot shows the output of `mvn test` command. This phase runs the complete unit test suite without packaging:
 - Compiles source code
 - Compiles test code
-- Executes all JUnit 5 tests
+- Executes all JUnit 5 tests from both test classes
 - Generates test reports
 
-**Test Suite Summary**:
-- Total tests executed: 15
-- All tests: PASSED ✅
-- No failures or skipped tests
-- Test execution time displayed
+**Full Test Suite Summary**:
+- **Total tests executed**: 21
+- **Manual Implementation Tests** (MainTest.java): 12 tests - All PASSED ✅
+- **External Library Tests** (ExternalLibrariesTest.java): 9 tests - All PASSED ✅
+- **No failures or skipped tests**
+- **Total test execution time**: Display shown in console
 
-**Test Categories**:
-1. **Capitalization Tests** (4 tests)
-   - `capitalizeSmu()` - Normal string capitalization
-   - `capitalizeEmptyString()` - Error handling for empty input
-   - `capitalizeSingleCharacter()` - Single character edge case
-   - `alreadyCapitalized()` - Already capitalized string
+### Test Class Details
 
-2. **MD5 Hash Tests** (5 tests)
-   - `md5Smu()` - Hash value validation
-   - `md5EmptyString()` - Empty input error handling
-   - `md5SingleCharacter()` - Single character hashing
-   - `md5HashAlreadyCapitalized()` - Already capitalized string hashing
-   - Additional MD5 test cases
+**1. MainTest.java (12 Tests - Manual Implementations)**
 
-3. **SHA-256 Hash Tests** (5 tests)
-   - `sha256Smu()` - Hash value validation
-   - `sha256EmptyString()` - Empty input error handling
-   - `sha256SingleCharacter()` - Single character hashing
-   - `sha256HashAlreadyCapitalized()` - Already capitalized string hashing
-   - Additional SHA-256 test cases
+Uses custom-written classes: `CapitalizeString` and `EncryptString`
 
-4. **Error Handling Tests** (1 test)
-   - Validates that RuntimeException is thrown for invalid inputs
+**Capitalization Tests** (4 tests):
+- `capitalizeSmu()` - Normal string "smu" → "Smu"
+- `capitalizeEmptyString()` - Error handling for empty input
+- `capitalizeSingleCharacter()` - Edge case "a" → "A"
+- `alreadyCapitalized()` - Idempotence "Smu" → "Smu"
+
+**MD5 Hash Tests** (4 tests):
+- `md5Smu()` - Hash validation for "Smu"
+- `md5EmptyString()` - Error handling for empty input
+- `md5SingleCharacter()` - Hash validation for "A"
+- `md5HashAlreadyCapitalized()` - Hash consistency
+
+**SHA-256 Hash Tests** (4 tests):
+- `sha256Smu()` - Hash validation for "Smu"
+- `sha256EmptyString()` - Error handling for empty input
+- `sha256SingleCharacter()` - Hash validation for "A"
+- `sha256HashAlreadyCapitalized()` - Hash consistency
+
+**2. ExternalLibrariesTest.java (9 Tests - Apache Commons Libraries)**
+
+Uses external libraries: Apache Commons Lang3 and Apache Commons Codec
+![ExternalLibrariesTest.java](./5512_maven_test_ExternalLibrariesTest.png)
+
+**Capitalization Tests** (3 tests):
+- `capitalizeSmuUsingExternalLib()` - StringUtils.capitalize("smu") → "Smu"
+- `capitalizeSingleCharacterUsingExternalLib()` - Single character handling
+- `alreadyCapitalizedUsingExternalLib()` - Idempotence check
+
+**MD5 Hash Tests** (3 tests):
+- `md5SmuUsingExternalLib()` - DigestUtils.md5Hex("Smu") validation
+- `md5SingleCharacterUsingExternalLib()` - Single character hashing
+- `md5HashAlreadyCapitalizedUsingExternalLib()` - Hash consistency
+
+**SHA-256 Hash Tests** (3 tests):
+- `sha256SmuUsingExternalLib()` - DigestUtils.sha256Hex("Smu") validation
+- `sha256SingleCharacterUsingExternalLib()` - Single character hashing
+- `sha256HashAlreadyCapitalizedUsingExternalLib()` - Hash consistency
+
+### Verification Benefits
+
+✅ **Code Correctness**: Manual implementations match library behavior
+✅ **Library Integration**: Demonstrates proper use of Apache Commons libraries
+✅ **Regression Testing**: Both implementations produce identical results
+✅ **Documentation**: Test cases serve as usage examples
+✅ **Confidence**: Double verification of algorithm implementations
 
 ---
 
@@ -268,6 +336,7 @@ mvn pmd:check
 # After packaging, run the JAR
 java -jar target/MavenAssingment-1.0.1.jar
 ```
+![Running the package](./5512_jar_package.png)
 
 ---
 
@@ -276,7 +345,7 @@ java -jar target/MavenAssingment-1.0.1.jar
 | Phase | Command | Status | Details |
 |-------|---------|--------|---------|
 | Compilation | `mvn clean compile` | ✅ SUCCESS | All sources compiled without errors |
-| Testing | `mvn test` | ✅ SUCCESS | All 15 tests passed |
+| Testing | `mvn test` | ✅ SUCCESS | All 21 tests passed (12 manual + 9 external library) |
 | Testing | `mvn clean test` | ✅ SUCCESS | Full test suite execution with compilation |
 | Packaging | `mvn clean package` | ✅ SUCCESS | JAR created, all checks passed |
 | Quality Checks | Spotless | ✅ PASSED | Code formatting validated |
@@ -290,16 +359,29 @@ java -jar target/MavenAssingment-1.0.1.jar
 ### ✅ Build Success Indicators
 1. All Maven phases execute successfully
 2. No compilation errors or warnings
-3. All 15 unit tests pass
+3. All 21 unit tests pass (doubled from original 12 tests)
 4. Quality plugins (Spotless, Checkstyle, PMD) pass validation
 5. JAR artifact is created successfully
 
 ### 📊 Test Coverage
+- **Total Test Cases**: 21 (doubled from original 12)
+  - **Manual Implementation Tests** (MainTest.java): 12 test cases
+  - **External Library Tests** (ExternalLibrariesTest.java): 9 test cases
+  
+**Manual Tests (CapitalizeString & EncryptString)**:
 - String capitalization: 4 test cases
-- MD5 hashing: 5 test cases
-- SHA-256 hashing: 5 test cases
-- Error handling: 1 test case
-- Total: 15 comprehensive test cases
+- MD5 hashing: 4 test cases
+- SHA-256 hashing: 4 test cases
+
+**External Library Tests (Apache Commons)**:
+- String capitalization via StringUtils: 3 test cases
+- MD5 hashing via DigestUtils: 3 test cases
+- SHA-256 hashing via DigestUtils: 3 test cases
+
+**Test Comparison**:
+- All test scenarios match between manual and external implementations
+- Ensures both approaches produce identical results
+- Validates that manual implementations are correct
 
 ### 🔍 Code Quality
 - Code is properly formatted (Spotless)
